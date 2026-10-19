@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schola Latina - Gerunziu și Gerundiv</title>
+    <style>
+        :root {
+            --bg-main: #12100e;
+            --panel-bg: #1e1914;
+            --accent-gold: #f0c040;
+            --accent-crimson: #a82323;
+            --text-parchment: #f4efa1;
+            --card-bg: #f7f1e1;
+            --card-text: #1a1612;
+            --border-color: #3d3124;
+            --correct-green: #2b8a3e;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: #ece2d0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            padding: 15px;
+        }
+
+        .main-container { max-width: 900px; margin: 0 auto; }
+
+        /* HEADER */
+        header {
+            text-align: center;
+            padding: 20px;
+            background: var(--panel-bg);
+            border: 3px solid var(--accent-gold);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(240, 192, 64, 0.2);
+        }
+
+        header h1 {
+            color: var(--accent-gold);
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        header p { color: var(--text-parchment); font-size: 0.95rem; }
+
+        /* NAVIGATION BAR */
+        .nav-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        @media(min-width: 600px) {
+            .nav-container { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        .nav-tab {
+            background: var(--panel-bg);
+            color: var(--accent-gold);
+            border: 2px solid var(--border-color);
+            padding: 12px 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-radius: 6px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .nav-tab:hover, .nav-tab.active {
+            background: var(--accent-gold);
+            color: #000;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 10px rgba(240, 192, 64, 0.5);
+        }
+
+        /* SECTION VISIBILITY */
+        .tab-section { display: none; }
+        .tab-section.active { display: block; }
+
+        /* CARD STYLES */
+        .content-card {
+            background: var(--panel-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            color: var(--accent-gold);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .parchment-box {
+            background: var(--card-bg);
+            color: var(--card-text);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 5px solid var(--accent-crimson);
+        }
+
+        .parchment-box h3 { color: var(--accent-crimson); margin-bottom: 8px; }
+
+        .tag-latin {
+            background: #2b2219;
+            color: var(--accent-gold);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        /* RPG THEATRE */
+        .rpg-window {
+            background: #000;
+            border: 2px solid var(--accent-gold);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .rpg-avatar-frame {
+            width: 70px;
+            height: 70px;
+            background: #251e17;
+            border: 2px solid var(--accent-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .rpg-dialogue {
+            background: var(--card-bg);
+            color: var(--card-text);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .rpg-speaker {
+            font-weight: bold;
+            color: var(--accent-crimson);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .rpg-latin { font-size: 1.1rem; font-weight: bold; color: #8b0000; margin: 5px 0; }
+        .rpg-ro { font-style: italic; margin-bottom: 8px; font-size: 0.95rem; }
+        .rpg-note { font-size: 0.85rem; background: rgba(0,0,0,0.08); padding: 5px 8px; border-radius: 4px; }
+
+        .rpg-btns { display: flex; justify-content: space-between; gap: 10px; }
+        .btn-action {
+            background: var(--accent-gold);
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* INSPECTOR EXAMPLES */
+        .interactive-phrase {
+            background: #fff;
+            color: #000;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .clickable-word {
+            color: var(--accent-crimson);
+            font-weight: bold;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        #inspector-display {
+            background: #000;
+            border: 2px solid var(--accent-gold);
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        /* QUIZ */
+        .quiz-item {
+            background: #251e17;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .quiz-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: var(--panel-bg);
+            color: #fff;
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            margin: 6px 0;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .quiz-btn.right { background: var(--correct-green) !important; font-weight: bold; }
+        .quiz-btn.wrong { background: var(--accent-crimson) !important; }
+
+        .score-box {
+            background: var(--accent-gold);
+            color: #000;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+
+    <header>
+        <h1>Schola Latina</h1>
+        <p>Aplicație Interactivă: Gerunziul și Gerundivul</p>
+    </header>
+
+    <!-- METODA NOUĂ DE NAVIGARE (100% SIGURĂ PE MOBIL) -->
+    <div class="nav-container">
+        <button class="nav-tab active" onclick="openSection('sec-lectia', this)">📜 1. Lecția</button>
+        <button class="nav-tab" onclick="openSection('sec-rpg', this)">🎭 2. RPG Dialog</button>
+        <button class="nav-tab" onclick="openSection('sec-exemple', this)">🔍 3. Exemple (10)</button>
+        <button class="nav-tab" onclick="openSection('sec-quiz', this)">⚔️ 4. Test (8)</button>
+    </div>
+
+    <!-- SECȚIUNEA 1: LECȚIA -->
+    <div id="sec-lectia" class="tab-section active">
+        <div class="content-card">
+            <div class="section-title">📜 1. Teorie & Reguli Gramaticale</div>
+
+            <div class="parchment-box">
+                <h3>1. Gerunziul (Nume Verbal Activ)</h3>
+                <p>Gerunziul este un substantiv verbal activ la declinarea a II-a (singular). Se formează adăugând sufixul <span class="tag-latin">-nd-</span> la tema prezentului.</p>
+                <br>
+                <ul>
+                    <li><strong>Genitiv:</strong> <em>ars amandi</em> = arta de a iubi</li>
+                    <li><strong>Acuzativ (+ ad):</strong> <em>ad discendum</em> = pentru a învăța (exprimă scopul)</li>
+                    <li><strong>Ablativ:</strong> <em>docendo discimus</em> = învățăm predând (instrumental)</li>
+                </ul>
+            </div>
+
+            <div class="parchment-box">
+                <h3>2. Gerundivul (Adjectiv Verbal Pasiv)</h3>
+                <p>Gerundivul este un adjectiv verbal pasiv care arată o <strong>necesitate sau o obligație</strong>. Se acordă în gen, număr și caz cu substantivul asociat.</p>
+                <br>
+                <ul>
+                    <li><strong>Sintagma Gerundivală:</strong> <em>ad urbem defendendam</em> = pentru a apăra cetatea.</li>
+                    <li><strong>Pasivul Perifrastic:</strong> <em>Carthago delenda est!</em> = Cartagina trebuie distrusă!</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECȚIUNEA 2: RPG DIALOG -->
+    <div id="sec-rpg" class="tab-section">
+        <div class="content-card">
+            <div class="section-title">🎭 2. Teatru RPG Interactiv</div>
+
+            <div class="rpg-window">
+                <div class="rpg-avatar-frame" id="rpg-avatar">⚔️</div>
+                <div class="rpg-dialogue">
+                    <div class="rpg-speaker" id="rpg-speaker">MARCUS THE CENTURION</div>
+                    <div class="rpg-latin" id="rpg-latin">Milites! Tempus ad pugnandum venit!</div>
+                    <div class="rpg-ro" id="rpg-ro">Ostași! A sosit timpul pentru a lupta!</div>
+                    <div class="rpg-note" id="rpg-note">📌 'ad pugnandum' = Gerunziu la Acuzativ exprimând scopul.</div>
+                </div>
+
+                <div class="rpg-btns">
+                    <button class="btn-action" onclick="changeRPG(-1)">⬅️ Înapoi</button>
+                    <span id="rpg-index" style="color:#fff; align-self:center;">1 / 3</span>
+                    <button class="btn-action" onclick="changeRPG(1)">Înainte ➡️</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECȚIUNEA 3: EXEMPLE INTERACTIVE -->
+    <div id="sec-exemple" class="tab-section">
+        <div class="content-card">
+            <div class="section-title">🔍 3. Inspector de Propoziții</div>
+            <p style="margin-bottom: 12px;">Apasă pe cuvintele subliniate pentru analiza lor:</p>
+
+            <div class="interactive-phrase">
+                1. Homines <span class="clickable-word" onclick="showInspect('ad discendum', 'Gerunziu la Acuzativ cu prepoziția AD. Arată scopul: pentru a învăța.')">ad discendum</span> nati sunt.
+                <div><em>Oamenii sunt născuți pentru a învăța.</em></div>
+            </div>
+
+            <div class="interactive-phrase">
+                2. Ars <span class="clickable-word" onclick="showInspect('scribendarum epistularum', 'Sintagmă Gerundivală la Genitiv feminin plural: arta de a scrie scrisori.')">scribendarum epistularum</span> difficilis est.
+                <div><em>Arta de a scrie scrisori este dificilă.</em></div>
+            </div>
+
+            <div class="interactive-phrase">
+                3. <span class="clickable-word" onclick="showInspect('Carthago delenda est', 'Gerundiv de obligație (Pasiv Perifrastic). Cartagina TREBUIE distrusă.')">Carthago delenda est</span>.
+                <div><em>Cartagina trebuie distrusă.</em></div>
+            </div>
+
+            <div class="interactive-phrase">
+                4. Brutus <span class="clickable-word" onclick="showInspect('ad patriam liberandam', 'Sintagmă Gerundivală la Acuzativ feminin singular (scop).')">ad patriam liberandam</span> venit.
+                <div><em>Brutus a venit pentru a elibera patria.</em></div>
+            </div>
+
+            <div class="interactive-phrase">
+                5. Consilium <span class="clickable-word" onclick="showInspect('urbis delendae', 'Sintagmă Gerundivală la Genitiv singular.')">urbis delendae</span> cepit.
+                <div><em>A luat hotărârea de a distruge orașul.</em></div>
+            </div>
+
+            <div class="interactive-phrase">
+                6. Mens <span class="clickable-word" onclick="showInspect('discendo', 'Gerunziu la cazul Ablativ: prin învățare.')">discendo</span> alitur.
+                <div><em>Mintea se hrănește prin învățare.</em></div>
+            </div>
+
+            <div class="interactive-phrase">
+                7. Epistula mihi <span class="clickable-word" onclick="showInspect('scribenda est', 'Gerundiv ce exprimă o obligație. Subiectul mihi = de către mine.')">scribenda est</span>.
+                <div><em>Eu trebuie să scriu o scrisoare.</em></div>
+            </div>
+
+            <div class="interactive-phrase">
+                8. In <span class="clickable-word" onclick="showInspect('legendo libro', 'Sintagmă Gerundivală la Ablativ masculin singular.')">legendo libro</span> operam consumpsit.
+                <div><em>A consumat efort în citirea cărții.</em></div>
+            </div>
+
+            <div class="interactive-phrase">
+                9. Pythia data est <span class="clickable-word" onclick="showInspect('ad consulendum', 'Gerunziu la Acuzativ neutru singular.')">ad consulendum</span>.
+                <div><em>Pythia a fost dată pentru a fi consultată.</em></div>
+            </div>
+
+            <div class="interactive-phrase">
+                10. Virtus in <span class="clickable-word" onclick="showInspect('agendo', 'Gerunziu la Ablativ după prepoziția IN.')">agendo</span> constat.
+                <div><em>Virtutea constă în acțiune.</em></div>
+            </div>
+
+            <div id="inspector-display">
+                <h4 id="inspect-title" style="color:var(--accent-gold);">-</h4>
+                <p id="inspect-body" style="color:#fff;">-</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECȚIUNEA 4: QUIZ -->
+    <div id="sec-quiz" class="tab-section">
+        <div class="content-card">
+            <div class="section-title">⚔️ 4. Test de Verificare</div>
+            <div class="score-box">PUNCTAJ XP: <span id="xp-val">0</span> / 80 XP</div>
+
+            <div class="quiz-item">
+                <p><strong>1. Ce reprezintă "Ad pacem faciendam"?</strong></p>
+                <button class="quiz-btn" onclick="answerQuiz(this, false)">A) Gerunziu la Dativ</button>
+                <button class="quiz-btn" onclick="answerQuiz(this, true)">B) Sintagmă Gerundivală la Acuzativ (scop)</button>
+                <button class="quiz-btn" onclick="answerQuiz(this, false)">C) Participiu Prezent</button>
+            </div>
+
+            <div class="quiz-item">
+                <p><strong>2. Traducerea corectă pentru "Libri legendi sunt":</strong></p>
+                <button class="quiz-btn" onclick="answerQuiz(this, false)">A) Cărțile au fost citite.</button>
+                <button class="quiz-btn" onclick="answerQuiz(this, true)">B) Cărțile trebuie citite.</button>
+                <button class="quiz-btn" onclick="answerQuiz(this, false)">C) Citesc o carte.</button>
+            </div>
+
+            <div class="quiz-item">
+                <p><strong>3. Ce caz are gerunziul din "Docendo discimus"?</strong></p>
+                <button class="quiz-btn" onclick="answerQuiz(this, true)">A) Ablativ (instrumental)</button>
+                <button class="quiz-btn" onclick="answerQuiz(this, false)">B) Genitiv</button>
+                <button class="quiz-btn" onclick="answerQuiz(this, false)">C) Nominativ</button>
+            </div>
+
+            <div class="quiz-item">
+                <p><strong>4. "Cupidus videndi urbem" transformat în gerundival devine:</strong></p>
+                <button class="quiz-btn" onclick="answerQuiz(this, false)">A) Cupidus videre urbem</button>
+                <button class="quiz-btn" onclick="answerQuiz(this, true)">B) Cupidus urbis videndae</button>
+                <button class="quiz-btn" onclick="answerQuiz(this, false)">C) Cupidus ad urbem</button>
+            </div>
+
+            <div class="quiz-item">
+                <p><strong>5. Prepoziția "ad" + Acuzativ Gerunzial exprimă:</strong></p>
+                <button class="quiz-btn" onclick="answerQuiz(this, true)">A) Scopul sau intenția</button>
+                <button class="quiz-btn" onclick="answerQuiz(this, false)">B) Cauza</button>
+                <button class="quiz-btn" onclick="answerQuiz(this, false)">C) Timpul</button>
+            </div>
+
+            <div class="quiz-item">
+                <p><strong>6. Corectează acordul din: "Signum dandus est"</strong></p>
+                <button class="quiz-btn" onclick="answerQuiz(this, false)">A) danda est</button>
+                <button class="quiz-btn" onclick="answerQuiz(this, true)">B) dandum est</button>
+                <button class="quiz-btn" onclick="answerQuiz(this, false)">C) dandi sunt</button>
+            </div>
+
+            <div class="quiz-item">
+                <p><strong>7. Traducere în latină: "Arta navigării"</strong></p>
+                <button class="quiz-btn" onclick="answerQuiz(this, true)">A) Ars navigandi</button>
+                <button class="quiz-btn" onclick="answerQuiz(this, false)">B) Ars ad navigandum</button>
+                <button class="quiz-btn" onclick="answerQuiz(this, false)">C) Ars navigando</button>
+            </div>
+
+            <div class="quiz-item">
+                <p><strong>8. Gerunziul are sens... iar Gerundivul are sens...</strong></p>
+                <button class="quiz-btn" onclick="answerQuiz(this, true)">A) Activ / Pasiv</button>
+                <button class="quiz-btn" onclick="answerQuiz(this, false)">B) Pasiv / Activ</button>
+                <button class="quiz-btn" onclick="answerQuiz(this, false)">C) Ambele sunt pasive</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // TAB ENGINE
+    function openSection(sectionId, btn) {
+        document.querySelectorAll('.tab-section').forEach(sec => sec.classList.remove('active'));
+        document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+        
+        document.getElementById(sectionId).classList.add('active');
+        btn.classList.add('active');
+    }
+
+    // RPG DATA & ENGINE
+    const rpgData = [
+        {
+            avatar: "⚔️",
+            speaker: "MARCUS (Centurion)",
+            latin: "Milites! Tempus ad pugnandum venit!",
+            ro: "Ostași! A sosit timpul pentru a lupta!",
+            note: "📌 'ad pugnandum' = Gerunziu la Acuzativ exprimând scopul."
+        },
+        {
+            avatar: "🏛️",
+            speaker: "LIVIA (Erudită)",
+            latin: "Ad urbem defendendam cuncti parati esse debemus!",
+            ro: "Cu toții trebuie să fim pregătiți pentru a apăra cetatea!",
+            note: "📌 'ad urbem defendendam' = Sintagmă Gerundivală la Acuzativ feminin singular."
+        },
+        {
+            avatar: "📜",
+            speaker: "CASSIUS (Senator)",
+            latin: "Carthago delenda est! Patria servanda est!",
+            ro: "Cartagina trebuie distrusă! Patria trebuie salvată!",
+            note: "📌 'delenda est' = Pasiv Perifrastic (Gerundiv de obligație)."
+        }
+    ];
+
+    let rpgIndex = 0;
+
+    function changeRPG(direction) {
+        rpgIndex += direction;
+        if (rpgIndex < 0) rpgIndex = 0;
+        if (rpgIndex >= rpgData.length) rpgIndex = rpgData.length - 1;
+
+        const current = rpgData[rpgIndex];
+        document.getElementById('rpg-avatar').innerText = current.avatar;
+        document.getElementById('rpg-speaker').innerText = current.speaker;
+        document.getElementById('rpg-latin').innerText = current.latin;
+        document.getElementById('rpg-ro').innerText = current.ro;
+        document.getElementById('rpg-note').innerText = current.note;
+        document.getElementById('rpg-index').innerText = `${rpgIndex + 1} / ${rpgData.length}`;
+    
